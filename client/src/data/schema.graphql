@@ -1,0 +1,84 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+input ChangePasswordInput {
+  oldPassword: String!
+  password: String!
+  clientMutationId: String
+}
+
+type ChangePasswordPayload {
+  error: String
+  me: User
+  clientMutationId: String
+}
+
+input LoginEmailInput {
+  email: String!
+  password: String!
+  clientMutationId: String
+}
+
+type LoginEmailPayload {
+  token: String
+  error: String
+  clientMutationId: String
+}
+
+type Mutation {
+  LoginEmail(input: LoginEmailInput!): LoginEmailPayload
+  RegisterEmail(input: RegisterEmailInput!): RegisterEmailPayload
+  ChangePassword(input: ChangePasswordInput!): ChangePasswordPayload
+}
+
+interface Node {
+  id: ID!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type Query {
+  node(id: ID!): Node
+  me: User
+  user(id: ID!): User
+  users(after: String, first: Int, before: String, last: Int, search: String): UserConnection
+}
+
+input RegisterEmailInput {
+  name: String!
+  email: String!
+  password: String!
+  clientMutationId: String
+}
+
+type RegisterEmailPayload {
+  token: String
+  error: String
+  clientMutationId: String
+}
+
+type User implements Node {
+  id: ID!
+  _id: String
+  name: String
+  email: String
+  active: Boolean
+}
+
+type UserConnection {
+  pageInfo: PageInfo!
+  edges: [UserEdge]
+  count: Int
+}
+
+type UserEdge {
+  node: User
+  cursor: String!
+}
